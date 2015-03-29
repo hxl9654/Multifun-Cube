@@ -1,0 +1,250 @@
+C51 COMPILER V9.02   DS1302                                                                03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN ..\output\DS1302.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\DS1302.c BROWSE DEBUG OBJECTEXTEND PRINT(.\DS1302.lst) OBJECT(..\
+                    -output\DS1302.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL¿ªÔ´Ğí¿ÉÖ¤////////////////////////////////////////////////
+   2              Copyright (C) <2014>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  °æÈ¨ËùÓĞ£¨C£© <2014>   <ºÎÏàÁú>
+  17                  ÕâÒ»³ÌĞòÊÇ×ÔÓÉÈí¼ş£¬Äã¿ÉÒÔ×ñÕÕ×ÔÓÉÈí¼ş»ù½ğ»á³ö°æµÄGNUÍ¨ÓÃ¹«¹²Ğí¿ÉÖ¤
+  18                  Ìõ¿îÀ´ĞŞ¸ÄºÍÖØĞÂ·¢²¼ÕâÒ»³ÌĞò¡£Äã¿ÉÒÔÊ¹ÓÃĞí¿ÉÖ¤µÄµÚÈı°æ£¬»òÕß£¨¸ù¾İÄã
+  19                  µÄÑ¡Ôñ£©ÓÃÈÎºÎ¸üĞÂµÄ°æ±¾¡£
+  20          
+  21                  ·¢²¼ÕâÒ»³ÌĞòµÄÄ¿µÄÊÇÏ£ÍûËüÓĞÓÃ£¬µ«Ã»ÓĞÈÎºÎµ£±£¡£ÉõÖÁÃ»ÓĞÊÊºÏÌØ¶¨Ä¿µÄ
+  22                  µÄÒşº¬µÄµ£±£¡£¸üÏêÏ¸µÄÇé¿öÇë²ÎÔÄGNUÍ¨ÓÃ¹«¹²Ğí¿ÉÖ¤¡£
+  23          
+  24                  ÄãÓ¦¸ÃÒÑ¾­ºÍ³ÌĞòÒ»ÆğÊÕµ½Ò»·İGNUÍ¨ÓÃ¹«¹²Ğí¿ÉÖ¤µÄ¸±±¾¡£Èç¹û»¹Ã»ÓĞ£¬Çë·Ã
+  25                  ÎÊ<http://www.gnu.org/licenses/>¡£
+  26                  ×÷Õß£ººÎÏàÁú
+  27                  ÓÊÏä£ºqwgg9654@gmail.com
+  28                            568629794@qq.com
+  29                  2014Äê12ÔÂ9ÈÕ
+  30                  ¹¦ÄÜÃèÊö£ºDS1302Ê±ÖÓĞ¾Æ¬µÄÊ±¼äÉèÖÃ¼°¶ÁÈ¡
+  31          *////////////////////////////////////////////////////////////////////////////////////////
+  32          /*//////////////////Íâ²¿ÉùÃ÷//////////////////////////////////
+  33          extern void DS1302_Init(uint8 *dat);  //DS1302³õÊ¼»¯º¯Êı£¬ÔÚÖ÷º¯Êı¿ªÍ·µ÷ÓÃ£¬datÊÇÉèÖÃµÄÊ±¼ä
+  34          extern uint8 DS1302_SingleRead(uint8 addr); //DS1302µ¥×Ö½Ú¶ÁÈ¡£¬datÎª¶ÁÈ¡Êı¾İ´æ´¢Î»ÖÃ£¬addrÎª¼Ä´æÆ÷µØÖ·£¬Ï
+             -ê¼ûÊı¾İÊÖ²á
+  35          extern void DS1302_SingleWrite(uint8 addr,uint8 dat);   //DS1302µ¥×Ö½ÚĞ´Èë£¬datÎªĞ´ÈëÊı¾İ£¬addrÎª¼Ä´æÆ÷µØÖ
+             -·£¬Ïê¼ûÊı¾İÊÖ²á
+  36          extern void DS1302_BrustWrite(uint8 *dat);  //DS1302BrustÄ£Ê½Ğ´Èë£¬datÎªuint8ĞÍµÄÓµÓĞ8¸öÔªËØµÄÊı×é
+  37          extern void DS1302_BrustRead(uint8 *dat);   //DS1302BrustÄ£Ê½¶ÁÈ¡£¬datÎªuint8ĞÍµÄÓµÓĞ8¸öÔªËØµÄÊı×é
+  38          ////////////////////////////////////////////////////////////*/
+  39          #include"config.h"
+  40          
+  41          struct StructTime{
+  42                  uint8 sec;
+  43                  uint8 min;
+  44                  uint8 hour;
+  45                  uint8 day;
+  46                  uint8 month;
+  47                  uint8 week;
+  48                  uint8 year;
+  49          };
+  50          
+  51          void Delay1ms()         //@11.0592MHz
+  52          {
+C51 COMPILER V9.02   DS1302                                                                03/28/2015 01:35:11 PAGE 2   
+
+  53   1              unsigned char i, j;
+  54   1      
+  55   1              i = 11;
+  56   1              j = 190;
+  57   1              do
+  58   1              {
+  59   2                      while (--j);
+  60   2              } while (--i);
+  61   1      }
+  62          
+  63          void DS1302_ByteWrite(uint8 dat)
+  64          {
+  65   1              uint8 mask;
+  66   1              for(mask=0x01;mask!=0;mask<<=1)
+  67   1                      {
+  68   2                              if(mask&dat)DS1302_IO=1;
+  69   2                              else DS1302_IO=0;
+  70   2                              DS1302_CK=1;
+  71   2                              DS1302_CK=0;
+  72   2                      }
+  73   1              DS1302_IO=1;
+  74   1      }
+  75          
+  76          uint8 DS1302_ByteRead()
+  77          {
+  78   1              uint8 mask,dat=0;
+  79   1              DS1302_IO=1;
+  80   1              for(mask=0x01;mask!=0;mask<<=1)
+  81   1                      {
+  82   2                              if(DS1302_IO)dat|=mask;
+  83   2                              DS1302_CK=1;
+  84   2                              DS1302_CK=0;
+  85   2                      }
+  86   1              return dat;
+  87   1      }
+  88          uint8 DS1302_SingleRead(uint8 addr)             //DS1302µ¥×Ö½Ú¶ÁÈ¡£¬datÎª¶ÁÈ¡Êı¾İ´æ´¢Î»ÖÃ£¬addrÎª¼Ä´æÆ÷µØÖ·£¬Ïê¼ûÊı¾İ
+             -ÊÖ²á
+  89          {
+  90   1              uint8 dat;
+  91   1              EA=0;
+  92   1              DS1302_CE=1;
+  93   1              DS1302_ByteWrite(0x81|(addr<<1));
+  94   1              dat=DS1302_ByteRead();
+  95   1              DS1302_CE=0;
+  96   1              EA=1;
+  97   1              return dat;
+  98   1      }
+  99          void DS1302_SingleWrite(uint8 addr,uint8 dat)   //DS1302µ¥×Ö½ÚĞ´Èë£¬datÎªĞ´ÈëÊı¾İ£¬addrÎª¼Ä´æÆ÷µØÖ·£¬Ïê¼ûÊı¾
+             -İÊÖ²á
+ 100          {
+ 101   1              EA=0;
+ 102   1              DS1302_CE=1;
+ 103   1              DS1302_ByteWrite(0x80|(addr<<1));
+ 104   1              DS1302_ByteWrite(dat);
+ 105   1              DS1302_CE=0;
+ 106   1              EA=1;
+ 107   1      }
+ 108          void DS1302_BrustWrite(uint8 *dat)      //DS1302BrustÄ£Ê½Ğ´Èë£¬datÎªuint8ĞÍµÄÓµÓĞ8¸öÔªËØµÄÊı×é
+ 109          {
+ 110   1              uint8 i;
+ 111   1              EA=0;
+ 112   1              DS1302_CE=1;
+C51 COMPILER V9.02   DS1302                                                                03/28/2015 01:35:11 PAGE 3   
+
+ 113   1              DS1302_ByteWrite(0xBE);
+ 114   1              for(i=0;i<8;i++)
+ 115   1                      {
+ 116   2                              DS1302_ByteWrite(*dat);
+ 117   2                              dat++;
+ 118   2                      }
+ 119   1              DS1302_CE=0;
+ 120   1              EA=1;
+ 121   1      }
+ 122          void DS1302_BrustRead(uint8 *dat)       //DS1302BrustÄ£Ê½¶ÁÈ¡£¬datÎªuint8ĞÍµÄÓµÓĞ8¸öÔªËØµÄÊı×é
+ 123          {
+ 124   1              uint8 i;
+ 125   1              EA=0;
+ 126   1              DS1302_CE=1;
+ 127   1              DS1302_ByteWrite(0xBF);
+ 128   1              for(i=0;i<8;i++)
+ 129   1                      {
+ 130   2                              *dat=DS1302_ByteRead();
+ 131   2                              dat++;
+ 132   2                              EA=1;
+ 133   2                              Delay1ms();
+ 134   2                              EA=0;
+ 135   2                      }
+ 136   1              DS1302_IO=0;
+ 137   1              DS1302_CE=0;
+ 138   1              EA=1;
+ 139   1      }
+ 140          void DS1302_Init(uint8 *dat)    //DS1302³õÊ¼»¯º¯Êı£¬ÔÚÖ÷º¯Êı¿ªÍ·µ÷ÓÃ£¬datÊÇÉèÖÃµÄÊ±¼ä
+ 141          {
+ 142   1              DS1302_CE=0;
+ 143   1              DS1302_CK=0;
+ 144   1              DS1302_IO=1;
+ 145   1              DS1302_SingleWrite(7, 0x00);
+ 146   1          DS1302_BrustWrite(dat);
+ 147   1      }
+ 148          /*//////////////////Ê¾Àı³ÌĞò///////////////////////////////
+ 149          
+ 150          void main()
+ 151          {
+ 152                  uint8 dat[8];
+ 153                  uint8 dat[8]={0x00,0x15,0x91,0x09,0x12,0x02,0x14,0x00};   //³õÊ¼Ê±¼ä
+ 154                  uint8 temp[16];
+ 155                  uint8 backup=0xAA;
+ 156                  LCD1602_Init();
+ 157                  Timer0_Conf(1);
+ 158                  DS1302_Init(dat);
+ 159                  while(1)
+ 160                  {
+ 161                          if(Flag_200ms)
+ 162                          {
+ 163                                  Flag_200ms=0;
+ 164                                  DS1302_BrustRead(dat);
+ 165                                  if(dat[0]==backup)continue;
+ 166                                  backup=dat[0];
+ 167                                  temp[0]='2';
+ 168                                  temp[1]='0';
+ 169                                  temp[2]=(dat[6]>>4)+'0';
+ 170                                  temp[3]=(dat[6]&0x0F)+'0';
+ 171                                  temp[4]='-';
+ 172                                  temp[5]=(dat[4]>>4)+'0';
+ 173                                  temp[6]=(dat[4]&0x0F)+'0';
+ 174                                  temp[7]='-';
+C51 COMPILER V9.02   DS1302                                                                03/28/2015 01:35:11 PAGE 4   
+
+ 175                                  temp[8]=(dat[3]>>4)+'0';
+ 176                                  temp[9]=(dat[3]&0x0F)+'0';
+ 177                                  temp[10]=' ';
+ 178                                  temp[11]='w';
+ 179                                  temp[12]='e';
+ 180                                  temp[13]='e';
+ 181                                  temp[14]='k';
+ 182                                  temp[15]=dat[5]+'0';
+ 183                                  LCD1602_Show(0,0,temp,16);
+ 184                                  temp[0]=' ';
+ 185                                  temp[1]=' ';
+ 186                                  temp[2]=' ';
+ 187                                  temp[3]=' ';
+ 188                                  temp[4]=((dat[2]>>4)&0x07)+'0';
+ 189                                  temp[5]=(dat[2]&0x0F)+'0';
+ 190                                  temp[6]=':';
+ 191                                  temp[7]=(dat[1]>>4)+'0';
+ 192                                  temp[8]=(dat[1]&0x0F)+'0';
+ 193                                  temp[9]=':';
+ 194                                  temp[10]=((dat[0]>>4)&0x07)+'0';
+ 195                                  temp[11]=(dat[0]&0x0F)+'0';
+ 196                                  temp[12]=' ';
+ 197                                  temp[13]=' ';
+ 198                                  temp[14]=' ';
+ 199                                  temp[15]=' ';
+ 200                                  LCD1602_Show(0,1,temp,16);
+ 201                          }
+ 202                  }
+ 203          }
+ 204          void it0() interrupt 1
+ 205          {
+ 206                  static uint8 ms200=0;
+ 207                  TH0=T0H;
+ 208                  TL0=T0L;
+ 209                  ms200++;
+ 210                  if(ms200>=200)
+ 211                          {
+ 212                                  ms200=0;
+ 213                                  Flag_200ms=1;
+ 214                          }
+ 215          }
+ 216          /////////////////////////////////////////////////////////*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    198    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

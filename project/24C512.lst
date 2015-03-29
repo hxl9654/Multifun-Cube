@@ -1,0 +1,142 @@
+C51 COMPILER V9.02   24C512                                                                03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE 24C512
+OBJECT MODULE PLACED IN ..\output\24C512.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\24C512.c BROWSE DEBUG OBJECTEXTEND PRINT(.\24C512.lst) OBJECT(..\
+                    -output\24C512.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL¿ªÔ´Ðí¿ÉÖ¤////////////////////////////////////////////////
+   2              Copyright (C) <2014>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  °æÈ¨ËùÓÐ£¨C£© <2014>   <ºÎÏàÁú>
+  17                  ÕâÒ»³ÌÐòÊÇ×ÔÓÉÈí¼þ£¬Äã¿ÉÒÔ×ñÕÕ×ÔÓÉÈí¼þ»ù½ð»á³ö°æµÄGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤
+  18                  Ìõ¿îÀ´ÐÞ¸ÄºÍÖØÐÂ·¢²¼ÕâÒ»³ÌÐò¡£Äã¿ÉÒÔÊ¹ÓÃÐí¿ÉÖ¤µÄµÚÈý°æ£¬»òÕß£¨¸ù¾ÝÄã
+  19                  µÄÑ¡Ôñ£©ÓÃÈÎºÎ¸üÐÂµÄ°æ±¾¡£
+  20          
+  21                  ·¢²¼ÕâÒ»³ÌÐòµÄÄ¿µÄÊÇÏ£ÍûËüÓÐÓÃ£¬µ«Ã»ÓÐÈÎºÎµ£±£¡£ÉõÖÁÃ»ÓÐÊÊºÏÌØ¶¨Ä¿µÄ
+  22                  µÄÒþº¬µÄµ£±£¡£¸üÏêÏ¸µÄÇé¿öÇë²ÎÔÄGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤¡£
+  23          
+  24                  ÄãÓ¦¸ÃÒÑ¾­ºÍ³ÌÐòÒ»ÆðÊÕµ½Ò»·ÝGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤µÄ¸±±¾¡£Èç¹û»¹Ã»ÓÐ£¬Çë·Ã
+  25                  ÎÊ<http://www.gnu.org/licenses/>¡£
+  26                  ×÷Õß£ººÎÏàÁú
+  27                  ÓÊÏä£ºqwgg9654@gmail.com
+  28                            568629794@qq.com
+  29                  2014Äê12ÔÂ9ÈÕ
+  30                  ¹¦ÄÜÃèÊö£ºEEPROM24C512Ð¾Æ¬ EEPROM24C512µÄ¶ÁÐ´
+  31                  ËùÐèµÄÎÄ¼þÖ§³Ö£ºIIC.c
+  32          *////////////////////////////////////////////////////////////////////////////////////////
+  33          /*//////////////////Íâ²¿ÉùÃ÷//////////////////////////////////
+  34          extern void EEPROM24C512_WriteString(uint8 addr,uint8 *dat,uint8 len,uint8 no);    //EEPROM24C512Ð´ÈëÁ¬Ðøµ
+             -ÄÊý¾Ý£¨addr£ºµØÖ·£¬dat£ºÊý¾Ý£¬len£ºÊý¾Ý³¤¶È£¬no£ºÆ÷¼þ¿É±à³ÌµØÖ·£©
+  35          extern void EEPROM24C512_Write(uint8 addr,uint8 dat,uint8 no);   //EEPROM24C512Ð´ÈëÒ»Î»Êý¾Ý£¨addr£ºµØÖ·£¬d
+             -at£ºÊý¾Ý£¬no£ºÆ÷¼þ¿É±à³ÌµØÖ·£©
+  36          extern void EEPROM24C512_ReadString(uint8 addr,uint8 len,uint8 *dat,uint8 no);    //EEPROM24C512¶ÁÈ¡Á¬ÐøµÄ
+             -Êý¾Ý£¨addr£ºµØÖ·£¬dat£º±£´æÊý¾ÝµÄÊý×é£¬len£ºÒª¶ÁÈ¡µÄ³¤¶È£¬no£ºÆ÷¼þ¿É±à³ÌµØÖ·£©
+  37          extern uint8 EEPROM24C512_Read(uint8 addr,uint8 no);  //EEPROM24C512¶Á³öÒ»Î»Êý¾Ý£¨addr£ºµØÖ·£¬no£ºÆ÷¼þ¿É±à
+             -³ÌµØÖ·£©£¬·µ»Ø£º¶Á³öµÄÊý¾Ý
+  38          ////////////////////////////////////////////////////////////*/
+  39          #include"config.h"
+  40          
+  41          extern void IIC_Start();
+  42          extern void IIC_Stop();
+  43          extern bit IIC_Write(uint8 dat);
+  44          extern uint8 IIC_Read(bit ACK);
+  45          uint8 EEPROM24C512_Read(uint8 addr,uint8 no)
+  46          {
+  47   1              uint8 temp;
+  48   1              IIC_Start();
+  49   1              IIC_Write(0xA0|(no<<1));
+  50   1              IIC_Write(addr);
+C51 COMPILER V9.02   24C512                                                                03/28/2015 01:35:11 PAGE 2   
+
+  51   1              IIC_Start();
+  52   1              IIC_Write(0xA0|(no<<1)|0x01);
+  53   1              temp=IIC_Read(1);
+  54   1              IIC_Stop();
+  55   1              return temp;
+  56   1      }
+  57          void EEPROM24C512_ReadString(uint8 addr,uint8 len,uint8 *dat,uint8 no)
+  58          {
+  59   1              IIC_Start();
+  60   1              IIC_Write(0xA0|(no<<1));
+  61   1              IIC_Write(addr);
+  62   1              IIC_Start();
+  63   1              IIC_Write(0xA0|(no<<1)|0x01);
+  64   1              while(len>0)
+  65   1              {
+  66   2                      *dat=IIC_Read(0);
+  67   2                      dat++;
+  68   2                      len--;
+  69   2              }
+  70   1              *dat=IIC_Read(1);
+  71   1              IIC_Stop();
+  72   1      }
+  73          void EEPROM24C512_Write(uint8 addr,uint8 dat,uint8 no)
+  74          {
+  75   1              bit temp;
+  76   1              while(1)
+  77   1              {
+  78   2                      IIC_Start();
+  79   2                      temp=IIC_Write(0xA0|(no<<1));
+  80   2                      if(temp)break;
+  81   2                      else IIC_Stop();
+  82   2              }
+  83   1              IIC_Write(addr);
+  84   1              IIC_Write(dat);
+  85   1              IIC_Stop();
+  86   1      }
+  87          void EEPROM24C512_WriteString(uint8 addr,uint8 *dat,uint8 len,uint8 no)
+  88          {
+  89   1              bit temp;
+  90   1              while(len>0)
+  91   1              {
+  92   2                      while(1)
+  93   2                      {
+  94   3                              IIC_Start();
+  95   3                              temp=IIC_Write(0xA0|(no<<1));
+  96   3                              if(temp)break;
+  97   3                              else IIC_Stop();
+  98   3                      }
+  99   2                      IIC_Write(addr);
+ 100   2                      while(len>0)
+ 101   2                      {
+ 102   3                              IIC_Write(*dat);
+ 103   3                              len--;
+ 104   3                              addr++;
+ 105   3                              dat++;
+ 106   3                              if((addr&0x07)==0)break;
+ 107   3                      }
+ 108   2                      IIC_Stop();
+ 109   2              }
+ 110   1      }
+
+
+C51 COMPILER V9.02   24C512                                                                03/28/2015 01:35:11 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    280    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      18
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

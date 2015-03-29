@@ -1,0 +1,104 @@
+C51 COMPILER V9.02   MAIN                                                                  03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN ..\output\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\main.lst) OBJECT(..\outp
+                    -ut\main.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL开源许可证////////////////////////////////////////////////
+   2              Copyright (C) <2015>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  版权所有（C） <2015>   <何相龙>
+  17                  这一程序是自由软件，你可以遵照自由软件基金会出版的GNU通用公共许可证
+  18                  条款来修改和重新发布这一程序。你可以使用许可证的第三版，或者（根据你
+  19                  的选择）用任何更新的版本。
+  20          
+  21                  发布这一程序的目的是希望它有用，但没有任何担保。甚至没有适合特定目的
+  22                  的隐含的担保。更详细的情况请参阅GNU通用公共许可证。
+  23          
+  24                  你应该已经和程序一起收到一份GNU通用公共许可证的副本。如果还没有，请访
+  25                  问<http://www.gnu.org/licenses/>。
+  26                  作者：何相龙
+  27                  邮箱：qwgg9654@gmail.com
+  28                            568629794@qq.com
+  29                  2015年2月6日
+  30                  功能描述：“不务正业的光立方”（多功能八阶全彩光立方）项目主程序
+  31          *////////////////////////////////////////////////////////////////////////////////////////
+  32          #define _MAIN_C_
+  33          #include"config.h"
+  34          
+  35          /*////////////////////////////////////////////////////////////////////////////////////////
+  36          
+  37                  函数名：SystemInit
+  38                  所在文件：main.c
+  39                  用途：初始化系统
+  40                  作者：何相龙
+  41                  日期：2015年2月6日
+  42          
+  43          *////////////////////////////////////////////////////////////////////////////////////////
+  44          void SystemInit()
+  45          {
+  46   1              P4SW=0x30;              //设置P4.4、P4.5为IO口，P4.6为低电压检测脚（用作KEY3）
+  47   1      
+  48   1      }
+  49          void main()
+  50          {
+  51   1              HC595_STCP=0;
+  52   1              for(;;)
+  53   1              {
+  54   2                      HC595_SHCP=0;
+C51 COMPILER V9.02   MAIN                                                                  03/28/2015 01:35:11 PAGE 2   
+
+  55   2                      HC595_DAT=0;
+  56   2                      HC595_SHCP=1;
+  57   2                      _74HC595_Change();
+*** WARNING C206 IN LINE 57 OF ..\SOURCE\MAIN.C: '_74HC595_Change': missing function-prototype
+  58   2                      OE=0;
+  59   2                      SDAT=0x00;
+  60   2              }
+  61   1      }
+  62          
+  63          
+  64          
+  65          
+  66          
+  67          
+  68          
+  69          
+  70          
+  71          
+  72          
+  73          
+  74          
+  75          
+  76          
+  77          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     22    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

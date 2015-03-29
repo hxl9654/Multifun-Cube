@@ -1,0 +1,12 @@
+"..\output\STARTUP.obj",
+"..\output\main.obj",
+"..\output\18B20.obj",
+"..\output\74hc595.obj",
+"..\output\DS1302.obj",
+"..\output\iic.obj",
+"..\output\key.obj",
+"..\output\uart.obj",
+"..\output\24C512.obj",
+"..\output\WatchDogTimer.obj" 
+TO "..\output\cube" 
+PRINT(".\cube.m51") RAMSIZE(256) 

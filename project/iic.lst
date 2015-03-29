@@ -1,0 +1,136 @@
+C51 COMPILER V9.02   IIC                                                                   03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE IIC
+OBJECT MODULE PLACED IN ..\output\iic.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\iic.c BROWSE DEBUG OBJECTEXTEND PRINT(.\iic.lst) OBJECT(..\output
+                    -\iic.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL¿ªÔ´Ðí¿ÉÖ¤////////////////////////////////////////////////
+   2              Copyright (C) <2014>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  °æÈ¨ËùÓÐ£¨C£© <2014>   <ºÎÏàÁú>
+  17                  ÕâÒ»³ÌÐòÊÇ×ÔÓÉÈí¼þ£¬Äã¿ÉÒÔ×ñÕÕ×ÔÓÉÈí¼þ»ù½ð»á³ö°æµÄGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤
+  18                  Ìõ¿îÀ´ÐÞ¸ÄºÍÖØÐÂ·¢²¼ÕâÒ»³ÌÐò¡£Äã¿ÉÒÔÊ¹ÓÃÐí¿ÉÖ¤µÄµÚÈý°æ£¬»òÕß£¨¸ù¾ÝÄã
+  19                  µÄÑ¡Ôñ£©ÓÃÈÎºÎ¸üÐÂµÄ°æ±¾¡£
+  20          
+  21                  ·¢²¼ÕâÒ»³ÌÐòµÄÄ¿µÄÊÇÏ£ÍûËüÓÐÓÃ£¬µ«Ã»ÓÐÈÎºÎµ£±£¡£ÉõÖÁÃ»ÓÐÊÊºÏÌØ¶¨Ä¿µÄ
+  22                  µÄÒþº¬µÄµ£±£¡£¸üÏêÏ¸µÄÇé¿öÇë²ÎÔÄGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤¡£
+  23          
+  24                  ÄãÓ¦¸ÃÒÑ¾­ºÍ³ÌÐòÒ»ÆðÊÕµ½Ò»·ÝGNUÍ¨ÓÃ¹«¹²Ðí¿ÉÖ¤µÄ¸±±¾¡£Èç¹û»¹Ã»ÓÐ£¬Çë·Ã
+  25                  ÎÊ<http://www.gnu.org/licenses/>¡£
+  26                  ×÷Õß£ººÎÏàÁú
+  27                  ÓÊÏä£ºqwgg9654@gmail.com
+  28                            568629794@qq.com
+  29                  2014Äê12ÔÂ9ÈÕ
+  30                  ¹¦ÄÜÃèÊö£ºIO¿ÚÄ£ÄâIICÍ¨ÐÅ
+  31          *////////////////////////////////////////////////////////////////////////////////////////
+  32          /*//////////////////Íâ²¿ÉùÃ÷//////////////////////////////////
+  33          extern void IIC_Start();    //·¢³öIICÍ¨ÐÅÆðÊ¼ÐÅºÅ
+  34          extern void IIC_Stop();     //·¢³öIICÍ¨ÐÅÖÕÖ¹ÐÅºÅ
+  35          extern bit IIC_Write(uint8 dat);    //IICÍ¨ÐÅÐ´ÈëÒ»¸öuint8ÐÍµÄÊý¾Ý£¨dat£ºÒªÐ´ÈëµÄÊý¾Ý£©·µ»Ø£º1£¬³É¹¦£»0£¬Ê
+             -§°Ü
+  36          extern uint8 IIC_Read(bit ACK);     //IICÍ¨ÐÅ¶Á³öÒ»¸öuint8ÐÍµÄÊý¾Ý£¨ACK£º0£¬·ÇÄ©Î»Êý¾Ý£»1£ºÄ©Î»Êý¾Ý£©£¬·µ»
+             -Ø¶Á³öµÄÊý¾Ý
+  37          ////////////////////////////////////////////////////////////*/
+  38          #include"config.h"
+  39          #define IICDelay() {nop_();nop_();nop_();nop_();}
+  40          
+  41          void IIC_Start()
+  42          {
+  43   1              IIC_SCL=0;
+  44   1              IICDelay();
+  45   1              IIC_SDA=1;
+  46   1              IICDelay();
+  47   1              IIC_SCL=1;
+  48   1              IICDelay();
+  49   1              IIC_SDA=0;
+  50   1              IICDelay();
+  51   1              IIC_SCL=0;
+  52   1      }
+C51 COMPILER V9.02   IIC                                                                   03/28/2015 01:35:11 PAGE 2   
+
+  53          void IIC_Stop()
+  54          {
+  55   1              IIC_SCL=0;
+  56   1              IICDelay();
+  57   1              IIC_SDA=0;
+  58   1              IICDelay();
+  59   1              IIC_SCL=1;
+  60   1              IICDelay();
+  61   1              IIC_SDA=1;
+  62   1      }
+  63          bit IIC_Write(uint8 dat)
+  64          {
+  65   1              uint8 i,mask=0x80;
+  66   1              bit a;
+  67   1              for(i=0;i<8;i++)
+  68   1                      {
+  69   2                              if(dat&mask)IIC_SDA=1;
+  70   2                              else IIC_SDA=0;
+  71   2                              IICDelay();
+  72   2                              IIC_SCL=1;
+  73   2                              mask>>=1;
+  74   2                              IIC_SCL=0;
+  75   2                      }
+  76   1              IICDelay();
+  77   1              IIC_SDA=1;
+  78   1              IICDelay();
+  79   1              IIC_SCL=1;
+  80   1              IICDelay();
+  81   1              a=IIC_SDA;
+  82   1              IIC_SCL=0;
+  83   1              return (~a); //·µ»Ø1£ºÕý³£
+  84   1      }
+  85          uint8 IIC_Read(bit ACK)
+  86          {
+  87   1              uint8 i,mask=0x80,dat=0;
+  88   1              IIC_SCL=0;
+  89   1              IIC_SDA=1;
+  90   1              for(i=0;i<8;i++)
+  91   1                      {
+  92   2                              IICDelay();
+  93   2                              IIC_SCL=1;
+  94   2                              IICDelay();
+  95   2                              if(IIC_SDA)dat|=mask;
+  96   2                              mask>>=1;
+  97   2                              IIC_SCL=0;
+  98   2                      }
+  99   1              IICDelay();
+ 100   1              IIC_SDA=ACK;
+ 101   1              IICDelay();
+ 102   1              IIC_SCL=1;
+ 103   1              IICDelay();
+ 104   1              IIC_SCL=0;
+ 105   1              return dat;
+ 106   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    162    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V9.02   IIC                                                                   03/28/2015 01:35:11 PAGE 3   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

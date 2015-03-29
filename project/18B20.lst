@@ -1,0 +1,193 @@
+C51 COMPILER V9.02   18B20                                                                 03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE 18B20
+OBJECT MODULE PLACED IN ..\output\18B20.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\18B20.c BROWSE DEBUG OBJECTEXTEND PRINT(.\18B20.lst) OBJECT(..\ou
+                    -tput\18B20.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL开源许可证////////////////////////////////////////////////
+   2              Copyright (C) <2014>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  版权所有（C） <2014>   <何相龙>
+  17                  这一程序是自由软件，你可以遵照自由软件基金会出版的GNU通用公共许可证
+  18                  条款来修改和重新发布这一程序。你可以使用许可证的第三版，或者（根据你
+  19                  的选择）用任何更新的版本。
+  20          
+  21                  发布这一程序的目的是希望它有用，但没有任何担保。甚至没有适合特定目的
+  22                  的隐含的担保。更详细的情况请参阅GNU通用公共许可证。
+  23          
+  24                  你应该已经和程序一起收到一份GNU通用公共许可证的副本。如果还没有，请访
+  25                  问<http://www.gnu.org/licenses/>。
+  26                  作者：何相龙
+  27                  邮箱：qwgg9654@gmail.com
+  28                            568629794@qq.com
+  29                  2014年12月11日
+  30                  功能描述：18B20温度传感器的简单操作
+  31          *////////////////////////////////////////////////////////////////////////////////////////
+  32          /*//////////////////外部声明//////////////////////////////////
+  33          extern int DS18B20_GetTemp(uint8 *addr);    //读取18B20，获得温度。（addr：64字节的器件编号，skip ROM：add
+             -r[0]=0x00）返回温度值。
+  34          extern void DS18B20_Start(uint8 *addr);     //启动18B20温度转换。（addr：64字节的器件编号，skip ROM：addr[
+             -0]=0x00）。每次读出温度后必须重新启动温度转换。
+  35          extern bit DS18B20_Init();  //初始化18B20，也可用于检测器件是否存在。返回值1：正常；2：异常。
+  36          ////////////////////////////////////////////////////////////*/
+  37          #include"config.h"
+  38          
+  39          void DelayX10us(unsigned char t)
+  40          {
+  41   1          do {
+  42   2              _nop_();
+  43   2              _nop_();
+  44   2              _nop_();
+  45   2              _nop_();
+  46   2              _nop_();
+  47   2              _nop_();
+  48   2              _nop_();
+  49   2              _nop_();
+  50   2          } while (--t);
+  51   1      }
+  52          bit DS18B20_Init()
+C51 COMPILER V9.02   18B20                                                                 03/28/2015 01:35:11 PAGE 2   
+
+  53          {
+  54   1              bit temp;
+  55   1              EA=0;
+  56   1              DS18B20_IO=0;
+  57   1              DelayX10us(60);
+  58   1              DS18B20_IO=1;
+  59   1              DelayX10us(7);
+  60   1              temp=DS18B20_IO;
+  61   1              while(!DS18B20_IO);
+  62   1              EA=1;
+  63   1              return ~temp;
+  64   1      }
+  65          void DS18B20_Write(uint8 dat)
+  66          {
+  67   1              uint8 mask;
+  68   1              EA=0;
+  69   1              for(mask=0x01;mask!=0;mask<<=1)
+  70   1              {
+  71   2                      if(dat&mask)
+  72   2                      {
+  73   3                              DS18B20_IO=0;
+  74   3                              _nop_();
+  75   3                              _nop_();
+  76   3                              DS18B20_IO=1;
+  77   3                              DelayX10us(8);
+  78   3                      }
+  79   2                      else
+  80   2                      {
+  81   3                              DS18B20_IO=0;
+  82   3                              DelayX10us(8);
+  83   3                              DS18B20_IO=1;
+  84   3                      }
+  85   2                      _nop_();
+  86   2                      _nop_();
+  87   2              }
+  88   1              EA=1;
+  89   1      }
+  90          uint8 DS18B20_Read()
+  91          {
+  92   1              uint8 mask,dat=0;
+  93   1              EA=0;
+  94   1              for(mask=0x01;mask!=0;mask<<=1)
+  95   1              {
+  96   2                      DS18B20_IO=0;
+  97   2                      _nop_();
+  98   2                      _nop_();
+  99   2                      DS18B20_IO=1;
+ 100   2                      DelayX10us(1);
+ 101   2                      if(DS18B20_IO)dat|=mask;
+ 102   2                      DelayX10us(5);
+ 103   2              }
+ 104   1              EA=1;
+ 105   1              return dat;
+ 106   1      }
+ 107          void DS18B20_Start(uint8 *addr)
+ 108          {
+ 109   1              if(!DS18B20_Init())return ;
+ 110   1              if(addr[0]==0x00)DS18B20_Write(0xCC);
+ 111   1              else
+ 112   1              {
+ 113   2                      DS18B20_Write(0x55);
+ 114   2                      DS18B20_Write(addr[0]);
+C51 COMPILER V9.02   18B20                                                                 03/28/2015 01:35:11 PAGE 3   
+
+ 115   2                      DS18B20_Write(addr[1]);
+ 116   2                      DS18B20_Write(addr[2]);
+ 117   2                      DS18B20_Write(addr[3]);
+ 118   2                      DS18B20_Write(addr[4]);
+ 119   2                      DS18B20_Write(addr[5]);
+ 120   2                      DS18B20_Write(addr[6]);
+ 121   2                      DS18B20_Write(addr[7]);
+ 122   2              }
+ 123   1              DS18B20_Write(0x44);
+ 124   1      }
+ 125          int DS18B20_GetTemp(uint8 *addr)
+ 126          {
+ 127   1              int temp ;
+ 128   1              uint8 temp1,temp2;
+ 129   1              uint16 temp3;
+ 130   1              if(!DS18B20_Init())return ;
+ 131   1              if(addr[0]==0x00)DS18B20_Write(0xCC);
+ 132   1              else
+ 133   1              {
+ 134   2                      DS18B20_Write(0x55);
+ 135   2                      DS18B20_Write(addr[0]);
+ 136   2                      DS18B20_Write(addr[1]);
+ 137   2                      DS18B20_Write(addr[2]);
+ 138   2                      DS18B20_Write(addr[3]);
+ 139   2                      DS18B20_Write(addr[4]);
+ 140   2                      DS18B20_Write(addr[5]);
+ 141   2                      DS18B20_Write(addr[6]);
+ 142   2                      DS18B20_Write(addr[7]);
+ 143   2              }
+ 144   1              DS18B20_Write(0xBE);
+ 145   1              temp1=DS18B20_Read();
+ 146   1              temp2=DS18B20_Read();
+ 147   1              temp3=(uint16)temp2;
+ 148   1              temp3<<=8;
+ 149   1              temp3|=(uint16)temp1;
+ 150   1              DelayX10us(15);
+ 151   1              if(temp3&0x8000)
+ 152   1              {
+ 153   2                      temp3&=0x07FF;
+ 154   2                      temp=-temp3;
+ 155   2              }
+ 156   1              else
+ 157   1              {
+ 158   2                      temp3&=0x07FF;
+ 159   2                      temp=temp3;
+ 160   2              }
+ 161   1              return temp;
+ 162   1      }
+*** WARNING C291 IN LINE 162 OF ..\SOURCE\18B20.C: not every exit path returns a value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    306    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

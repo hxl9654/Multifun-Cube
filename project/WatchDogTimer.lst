@@ -1,0 +1,107 @@
+C51 COMPILER V9.02   WATCHDOGTIMER                                                         03/28/2015 01:35:11 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE WATCHDOGTIMER
+OBJECT MODULE PLACED IN ..\output\WatchDogTimer.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\WatchDogTimer.c BROWSE DEBUG OBJECTEXTEND PRINT(.\WatchDogTimer.l
+                    -st) OBJECT(..\output\WatchDogTimer.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL开源许可证////////////////////////////////////////////////
+   2              Copyright (C) <2015>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either verHC595_DATon 3 of the License, or
+   6              (at your option) any later verHC595_DATon.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  版权所有（C） <2015>   <何相龙>
+  17                  这一程序是自由软件，你可以遵照自由软件基金会出版的GNU通用公共许可证
+  18                  条款来修改和重新发布这一程序。你可以使用许可证的第三版，或者（根据你
+  19                  的选择）用任何更新的版本。
+  20          
+  21                  发布这一程序的目的是希望它有用，但没有任何担保。甚至没有适合特定目的
+  22                  的隐含的担保。更详细的情况请参阅GNU通用公共许可证。
+  23          
+  24                  你应该已经和程序一起收到一份GNU通用公共许可证的副本。如果还没有，请访
+  25                  问<http://www.gnu.org/licenses/>。
+  26          
+  27                  作者：何相龙
+  28                  邮箱：qwgg9654@gmail.com
+  29                            568629794@qq.com
+  30                  2015年2月6日
+  31                  功能描述：STC12C5A60S2单片机看门狗程序
+  32          *////////////////////////////////////////////////////////////////////////////////////////
+  33          /*//////////////////外部声明//////////////////////////////////
+  34          extern void WatchDogTimer_Init(uint8 ps);    //初始化看门狗。（ps：看门狗预分频值设置）
+  35          extern void WatchDogTimer_Feed();     //看门狗喂狗。
+  36          extern WatchDogTimer_Hold();  //关闭看门狗。
+  37          ////////////////////////////////////////////////////////////*/
+  38          #include"config.h"
+  39          
+  40          /*////////////////////////////////////////////////////////////////////////////////////////
+  41          
+  42                  函数名：WatchDogTimer_Init
+  43                  所在文件：watchdogtimer.c
+  44                  用途：初始化看门狗
+  45                  参数列表
+  46                          变量名          变量类型        变量描述                                备注
+  47                          ps                      uint8           看门狗预分频值设置
+  48                  作者：何相龙
+  49                  日期：2015年2月6日
+  50          
+  51          *////////////////////////////////////////////////////////////////////////////////////////
+  52          void WatchDogTimer_Init(uint8 ps)
+  53          {
+  54   1              WDT_CONTR =0x30|ps;     //启动看门狗并重新计数，设置预分频，空闲模式不计数
+C51 COMPILER V9.02   WATCHDOGTIMER                                                         03/28/2015 01:35:11 PAGE 2   
+
+  55   1      }
+  56          /*////////////////////////////////////////////////////////////////////////////////////////
+  57          
+  58                  函数名：WatchDogTimer_Feed
+  59                  所在文件：watchdogtimer.c
+  60                  用途：看门狗喂狗
+  61                  作者：何相龙
+  62                  日期：2015年2月6日
+  63          
+  64          *////////////////////////////////////////////////////////////////////////////////////////
+  65          void WatchDogTimer_Feed()
+  66          {
+  67   1              WDT_CONTR |=0x10;
+  68   1      }
+  69          /*////////////////////////////////////////////////////////////////////////////////////////
+  70          
+  71                  函数名：WatchDogTimer_Hold
+  72                  所在文件：watchdogtimer.c
+  73                  用途：关闭看门狗
+  74                  作者：何相龙
+  75                  日期：2015年2月6日
+  76          
+  77          *////////////////////////////////////////////////////////////////////////////////////////
+  78          void WatchDogTimer_Hold()
+  79          {
+  80   1              WDT_CONTR &=0xDF;
+  81   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     14    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,81 @@
+C51 COMPILER V9.02   74HC573                                                               03/28/2015 01:16:03 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE 74HC573
+OBJECT MODULE PLACED IN ..\output\74hc573.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\source\74hc573.c BROWSE DEBUG OBJECTEXTEND PRINT(.\74hc573.lst) OBJECT(.
+                    -.\output\74hc573.obj)
+
+line level    source
+
+   1          /*//////////////////////////GPL开源许可证////////////////////////////////////////////////
+   2              Copyright (C) <2014>  <Xianglong He>
+   3              This program is free software: you can redistribute it and/or modify
+   4              it under the terms of the GNU General Public License as published by
+   5              the Free Software Foundation, either version 3 of the License, or
+   6              (at your option) any later version.
+   7          
+   8              This program is distributed in the hope that it will be useful,
+   9              but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11              GNU General Public License for more details.
+  12          
+  13              You should have received a copy of the GNU General Public License
+  14              along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15          
+  16                  版权所有（C） <2014>   <何相龙>
+  17                  这一程序是自由软件，你可以遵照自由软件基金会出版的GNU通用公共许可证
+  18                  条款来修改和重新发布这一程序。你可以使用许可证的第三版，或者（根据你
+  19                  的选择）用任何更新的版本。
+  20          
+  21                  发布这一程序的目的是希望它有用，但没有任何担保。甚至没有适合特定目的
+  22                  的隐含的担保。更详细的情况请参阅GNU通用公共许可证。
+  23          
+  24                  你应该已经和程序一起收到一份GNU通用公共许可证的副本。如果还没有，请访
+  25                  问<http://www.gnu.org/licenses/>。
+  26          
+  27                  文件名：74hc573.c
+  28                  作者：何相龙
+  29                  邮箱：qwgg9654@gmail.com
+  30                            568629794@qq.com
+  31                  2015年3月28日
+  32                  功能描述：74HC573芯片的控制
+  33          *////////////////////////////////////////////////////////////////////////////////////////
+  34          /*//////////////////外部声明//////////////////////////////////
+  35          
+  36          
+  37          ////////////////////////////////////////////////////////////*/
+  38          #include"config.h"
+  39          /*////////////////////////////////////////////////////////////////////////////////////////
+  40          
+  41                  函数名：HC573_Init
+  42                  所在文件：74hc573.c
+  43                  用途：锁存器初始化
+  44                  作者：何相龙
+  45                  日期：2015年3月28日
+  46          
+  47          *////////////////////////////////////////////////////////////////////////////////////////
+  48          void HC573_Init()
+  49          {
+  50   1              OE=0;
+  51   1              SDAT=0xFF;
+  52   1              //LE=1;
+  53   1              //LE=0;
+  54   1      }
+C51 COMPILER V9.02   74HC573                                                               03/28/2015 01:16:03 PAGE 2   
+
+  55          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      6    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
